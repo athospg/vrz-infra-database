@@ -5,6 +5,10 @@ namespace VRZ.Infra.Database.Abstractions.Set
 {
     public interface IDatabaseSetClauses<in TEntity>
     {
+        string SelectColumns();
+
+        void SelectColumns(StringBuilder query);
+
         string InsertColumns();
 
         void InsertColumns(StringBuilder query);

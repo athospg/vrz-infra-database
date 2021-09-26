@@ -19,6 +19,7 @@ namespace VRZ.Infra.Database.Abstractions.Set
         protected readonly string EntityTypeName;
 
         protected readonly List<PropertyInfo> MappedProperties;
+        protected readonly List<PropertyInfo> MappedPropertiesWithoutId;
 
         #endregion
 
@@ -29,6 +30,7 @@ namespace VRZ.Infra.Database.Abstractions.Set
             EntityTypeName = entityTypeName;
 
             MappedProperties = typeof(TEntity).GetProperties().GetMappedProperties().ToList();
+            MappedPropertiesWithoutId = typeof(TEntity).GetProperties().GetMappedProperties(true).ToList();
         }
 
 
@@ -49,6 +51,21 @@ namespace VRZ.Infra.Database.Abstractions.Set
 
         #region IDatabaseSetClauses
 
+        public string SelectColumns()
+        {
+            var query = new StringBuilder();
+            SelectColumns(query);
+            return query.ToString();
+        }
+
+        public void SelectColumns(StringBuilder query)
+        {
+            foreach (var prop in MappedProperties.Select(x => x.Name))
+            {
+                query.Append($"{prop},");
+            }
+        }
+
         public virtual string InsertColumns()
         {
             var query = new StringBuilder();
@@ -58,7 +75,7 @@ namespace VRZ.Infra.Database.Abstractions.Set
 
         public virtual void InsertColumns(StringBuilder query)
         {
-            foreach (var prop in MappedProperties.Select(x => x.Name))
+            foreach (var prop in MappedPropertiesWithoutId.Select(x => x.Name))
             {
                 query.Append($"{prop},");
             }

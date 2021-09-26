@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <LangVersion>latest</LangVersion>
+    <Version>0.0.1</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Npgsql" Version="6.0.0-rc.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VRZ.Infra.Database\VRZ.Infra.Database.csproj" />
+  </ItemGroup>
+
+</Project>

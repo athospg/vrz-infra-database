@@ -12,12 +12,19 @@ namespace VRZ.Infra.Database.Utils
         ///     Get class/struct properties without <see cref="DatabaseIgnoreMember" /> attribute.
         /// </summary>
         /// <param name="properties"></param>
+        /// <param name="ignoreId"></param>
         /// <returns></returns>
-        public static IEnumerable<PropertyInfo> GetMappedProperties(this IEnumerable<PropertyInfo> properties)
+        public static IEnumerable<PropertyInfo> GetMappedProperties(this IEnumerable<PropertyInfo> properties,
+            bool ignoreId = false)
         {
             var mappedProperties = new List<PropertyInfo>();
             foreach (var property in properties)
             {
+                if (ignoreId && (property.Name.ToLower() == "id" || property.Name.ToLower() == "_id"))
+                {
+                    continue;
+                }
+
                 var attributes = property.GetCustomAttributes(typeof(DatabaseIgnoreMember), false);
                 if (attributes.Any())
                 {
